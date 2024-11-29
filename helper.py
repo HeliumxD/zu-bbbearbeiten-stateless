@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import datetime
 
 items = []
 
@@ -6,12 +7,16 @@ items = []
 @dataclass
 class Item:
     text: str
+    date: datetime.date
     isCompleted: bool = False
 
 
-def add(text):
+
+def add(text, date):
+    date = datetime.datetime.strptime(date, '%Y-%m-%d').date()
     text = text.replace('b', 'bbb').replace('B', 'Bbb')
-    items.append(Item(text))
+    items.append(Item(text, date))
+    sort(text, date)
 
 
 def get_all():
@@ -24,3 +29,6 @@ def get(index):
 
 def update(index):
     items[index].isCompleted = not items[index].isCompleted
+
+def sort(text, date):
+    items.sort(key=lambda x: x.date)
